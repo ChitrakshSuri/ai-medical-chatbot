@@ -2,6 +2,7 @@ from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
 from langchain_classic.text_splitter import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings 
 from langchain_community.vectorstores import FAISS 
+from dotenv import load_dotenv
 
 # Step 1: Load raw PDF(s)
 DATA_PATH = "data/"
