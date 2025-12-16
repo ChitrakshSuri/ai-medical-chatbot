@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+*.egg-info/
+
+# Pipenv (you have Pipfile, but requirements.txt is better for this project)
+Pipfile
+Pipfile.lock
+
+# Large PDF files (optional - depends if you want to commit them)
+data/*.pdf
+
+# Hugging Face cache
+.cache/
+models/
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
