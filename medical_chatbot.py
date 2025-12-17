@@ -15,6 +15,10 @@ load_dotenv()
 
 DB_FAISS_PATH = "vectorstore/db_FAISS"
 
+def is_greeting(text: str) -> bool:
+    greetings = ["hi", "hello", "hey", "good morning", "good evening"]
+    return text.lower().strip() in greetings
+
 # --------------------------------------------------
 # CACHE: VECTORSTORE + RAG CHAIN
 # --------------------------------------------------
@@ -85,6 +89,7 @@ def main():
         "⚠️ This chatbot provides information for educational purposes only and "
         "is not a substitute for professional medical advice."
     )
+    
 
 
     rag_chain, retriever = load_rag_chain()
@@ -107,22 +112,28 @@ def main():
             {"role": "user", "content": user_query}
         )
 
-        # (Optional) show retrieved chunks
-        with st.expander("🔍 Retrieved context"):
-            docs = retriever.invoke(user_query)
-            for i, d in enumerate(docs, 1):
-                st.markdown(f"**Chunk {i}:**")
-                st.write(d.page_content)
+        # 👉 GREETING HANDLING FIRST
+        if is_greeting(user_query):
+            response = (
+                "Hi 👋 I’m your medical information assistant."
+            )
+
+        else:
+            # 🔍 ONLY retrieve context for real medical questions
+            with st.expander("🔍 Retrieved context"):
+                docs = retriever.invoke(user_query)
+                for i, d in enumerate(docs, 1):
+                    st.markdown(f"**Chunk {i}:**")
+                    st.write(d.page_content)
+
+            with st.spinner("Thinking..."):
+                response = rag_chain.invoke(user_query)
 
         # Assistant response
-        with st.spinner("Thinking..."):
-            response = rag_chain.invoke(user_query)
-
         st.chat_message("assistant").markdown(response)
         st.session_state.messages.append(
             {"role": "assistant", "content": response}
         )
-
 
 if __name__ == "__main__":
     main()
