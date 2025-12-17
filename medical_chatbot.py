@@ -45,6 +45,8 @@ def load_rag_chain():
     {question}
 
     Answer:
+
+    Note: This information is for educational purposes only and is not a substitute for professional medical advice.
     """)
 
     # Embeddings + FAISS
@@ -79,6 +81,11 @@ def load_rag_chain():
 # --------------------------------------------------
 def main():
     st.title("🩺 Medical RAG Chatbot")
+    st.caption(
+        "⚠️ This chatbot provides information for educational purposes only and "
+        "is not a substitute for professional medical advice."
+    )
+
 
     rag_chain, retriever = load_rag_chain()
 
