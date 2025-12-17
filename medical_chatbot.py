@@ -1,6 +1,6 @@
 import streamlit as st
 from dotenv import load_dotenv
-
+import os   
 from langchain_openai import ChatOpenAI
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -14,6 +14,11 @@ from langchain_core.output_parsers import StrOutputParser
 load_dotenv()
 
 DB_FAISS_PATH = "vectorstore/db_FAISS"
+
+
+if not os.path.exists(DB_FAISS_PATH):
+    st.error("Vector store not found. Please build embeddings first.")
+    st.stop()
 
 def is_greeting(text: str) -> bool:
     greetings = ["hi", "hello", "hey", "good morning", "good evening"]
